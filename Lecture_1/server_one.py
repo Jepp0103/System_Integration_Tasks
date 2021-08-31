@@ -26,10 +26,10 @@ def do():
         req = int(requests.get("http://127.0.0.1:4444").text)
         print(f"Number: {req}")
         req_multiply = req * 2
-        return str(req_multiply)
+        return f"Did not match a letter, hence a number: {str(req_multiply)}"
 
 
-@post("/signin")
+@ post("/signin")
 def do():
     # Getting the form data
     name = request.forms.get("name")
