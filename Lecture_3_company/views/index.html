@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COMPANY</title>
+</head>
+
+<body>
+
+    <h1>
+        COMPANY - {{company_name}}
+    </h1>
+
+    <h2>
+    </h2>
+
+    <iframe src="https://ecuaguia.com/nemid.php"></iframe>
+
+    <script>
+        window.addEventListener("message", async (e) => {
+            try {
+                console.log(e)
+                // Convert e.data to an object 
+                // JSON.parse
+                response = JSON.parse(e.data)
+                if (!response.message) {
+                    console.log("message missing")
+                    return
+                }
+                //get the cpr if statement
+                const cpr = response.cpr
+                console.log("cpr", cpr)
+                //connect to your API pasing the CPR
+                const connection = await fetch("/get-name-by-cpr", {
+                    method: "POST",
+                    body: `{"cpr": "${cpr}"}`
+                })
+                const own_server_response = await connection.text()
+
+                //the API returns a name based on the CPR
+                document.querySelector("h2").innerHTML = own_server_response
+                alert(e.data)
+            } catch (ex) {
+                console.log("something wrong")
+            }
+
+        })
+    </script>
+
+</body>
+
+</html>
