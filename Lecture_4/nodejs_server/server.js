@@ -19,27 +19,23 @@ let dataNumber;
 
 app.post("/receive-xml", (req, res) => {
     console.log("xml data: ", req.body.data);
-    dataNumber = parseInt(req.body.data * 2);
+    dataNumber = (req.body.data * 2).toString();
 
-    axios.post('http://localhost:3333/receive-json', {
+    axios.post('http://192.168.111.148:3333/receive-json', {
         data: dataNumber
     })
         .then(function (response) {
             console.log(response.data);
-            res.send({ "Data sent: ": dataNumber });
+            res.send(response.data);
         })
         .catch(function (error) {
             console.log(error)
         })
 });
 
-app.post("/receive-csv", (req, res) => {
-    console.log("Csv data: ", req.body)
-});
 
 //listens for a port number
 app.listen(port, error => {
-    console.log("Error: ", error);
     if (error) {
         console.log("Error running the server", error);
     }
