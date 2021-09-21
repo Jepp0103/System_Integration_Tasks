@@ -14,7 +14,7 @@ def do():
 @get("/index-token")
 @view("index_token.html")
 def do():
-    return dict(company_name="SUPER")
+    return dict(company_name="Token stuff")
 
 
 @post("/get-name-by-cpr")
@@ -31,18 +31,35 @@ def do():
 
 @post("/process-jwt-token")
 def do():
-    token = json.load(request.body)["jwt"]
+    email = ""
+    phone = ""
+    token = ""
+    try:
+        token = json.load(request.body)["jwt"]
+        # print("token: " + (token))
 
-    print("token: " + (token))
+        try:
+            email = token["email"]
+        except Exception:
+            send_sms("Email missing")
 
-    decoded_token = jwt.decode(token, "jwt-secret-key", algorithms=["HS256"])
+        try:
+            decoded_token = jwt.decode(
+                token, "jwt-secret-key", algorithms=["HS256"])
+        except Exception as jwt_error:
+            send_sms(jwt_error)
 
-    print("decoded " + str(decoded_token))  # Returned as a dictionary
+        # print("decoded " + str(decoded_token))  # Returned as a dictionary
 
-    # Datetime
+    except Exception as json_error:
+        send_sms(json_error)
 
-    return
+    return str(decoded_token)
 
 
-##############################
+def send_sms(message):
+    phone = "+4542659183"
+
+
+    ##############################
 run(host="127.0.0.1", port=4444, debug=True, reloader=True, server="paste")
