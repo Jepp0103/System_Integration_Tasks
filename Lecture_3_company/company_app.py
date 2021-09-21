@@ -1,6 +1,7 @@
 from bottle import run, get, view, post, request
 import json
 import jwt
+import requests
 
 ##############################
 
@@ -31,34 +32,34 @@ def do():
 
 @post("/process-jwt-token")
 def do():
-    email = ""
-    phone = ""
-    token = ""
+    result = ""
     try:
         token = json.load(request.body)["jwt"]
-        # print("token: " + (token))
 
         try:
-            email = token["email"]
-        except Exception:
-            send_sms("Email missing")
-
-        try:
-            decoded_token = jwt.decode(
+            result = jwt.decode(
                 token, "jwt-secret-key", algorithms=["HS256"])
         except Exception as jwt_error:
             send_sms(jwt_error)
 
-        # print("decoded " + str(decoded_token))  # Returned as a dictionary
+        try:
+            email = result["email"]
+        except Exception as emailException:
+            send_sms("Email missing")
 
     except Exception as json_error:
         send_sms(json_error)
 
-    return str(decoded_token)
+    return str(result)
 
 
 def send_sms(message):
+    endpoint = "https://fatsms.com/api-send-sms"
     phone = "+4542659183"
+    my_api_key = "7893f0d6872d606467a9e0e3a998d8db"
+    data_dict = {"to_phone": phone, "api_key": my_api_key, "message": message}
+    requests.post(endpoint, data = data_dict)
+    print(str(data_dict))
 
 
     ##############################
