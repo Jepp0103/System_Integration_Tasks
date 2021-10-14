@@ -18,14 +18,14 @@ app.use(xmlparser());
 let dataNumber;
 
 app.post("/receive-xml", (req, res) => {
-    console.log("xml data: ", req.body.data);
+    console.log("Server 1 received xml data:", req.body.data);
     dataNumber = (req.body.data * 2).toString();
 
     axios.post('http://127.0.0.1:3333/receive-json', {
         data: dataNumber
     })
         .then(function (response) {
-            console.log(response.data);
+            console.log("Response server 3 CSV data:", response.data);
             res.send(response.data);
         })
         .catch(function (error) {
