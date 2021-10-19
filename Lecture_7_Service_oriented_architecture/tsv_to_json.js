@@ -1,6 +1,8 @@
 const axios = require('axios');
 
-axios.get('https://docs.google.com/spreadsheets/d/e/2PACX-1vRYbybiVenyLTJ39ysmw36TfyJWU8p9UK72f81LJ_eIo6vwsV9va_aWETMCgl8EXOefIzTRABU7DqRZ/pub?output=tsv')
+const endpoint = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRYbybiVenyLTJ39ysmw36TfyJWU8p9UK72f81LJ_eIo6vwsV9va_aWETMCgl8EXOefIzTRABU7DqRZ/pub?output=tsv";
+
+axios.get(endpoint)
     .then(function (response) {
         console.log("TSV:")
         console.log(response.data);
