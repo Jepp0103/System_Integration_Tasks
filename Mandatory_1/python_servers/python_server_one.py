@@ -18,7 +18,7 @@ def send():
 def readcsv(csvdata):
     reader = csv.reader(csvdata, delimiter=",")
     for row in reader:
-        print("Response server 2:", row)
+        print(row)
 
 
 send()
